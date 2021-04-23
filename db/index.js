@@ -317,6 +317,20 @@ console.log("user", user)
   // return the user object
 }
 
+async function getUserByUsername(username) {
+  try {
+    const { rows: [user] } = await client.query(`
+      SELECT *
+      FROM users
+      WHERE username=$1;
+    `, [username]);
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // and export them
 module.exports = {
   client,
@@ -333,5 +347,6 @@ module.exports = {
   addTagsToPost,
   getAllTags,
   getPostById,
-  getPostsByTagName
+  getPostsByTagName,
+  getUserByUsername
 }
