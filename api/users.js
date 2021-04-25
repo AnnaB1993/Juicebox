@@ -40,7 +40,7 @@ usersRouter.post('/register', async (req, res, next) => {
 
     const token = jwt.sign({ 
       id: user.id, 
-      username
+      username: user.username
     }, process.env.JWT_SECRET, {
       expiresIn: '1w'
     });
@@ -59,7 +59,6 @@ usersRouter.post('/login', async (req, res, next) => {
 
   // request must have both
   if (!username || !password) {
-    console.log("WRONG")
     next({
       name: "MissingCredentialsError",
       message: "Please supply both a username and password"
@@ -71,7 +70,7 @@ usersRouter.post('/login', async (req, res, next) => {
 
     if (user && user.password == password) {
       // create token & return to user
-      const token = jwt.sign({ id: '1', username: 'albert' }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: user.id, username: username}, process.env.JWT_SECRET);
       res.send({ message: "you're logged in!", token: token });
     } else {
       next({ 
